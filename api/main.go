@@ -32,7 +32,7 @@ var (
 )
 
 func main() {
-	if err := loadModel(); err != nil {
+	if err := loadModel("/model/tensorflow_inception_graph.pb", "/model/imagenet_comp_graph_label_strings.txt"); err != nil {
 		log.Fatal(err)
 		return
 	}
@@ -42,9 +42,9 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
 
-func loadModel() error {
+func loadModel(modelFilePath, labelFilePath string) error {
 	// Load inception model
-	model, err := ioutil.ReadFile("/model/tensorflow_inception_graph.pb")
+	model, err := ioutil.ReadFile(modelFilePath)
 	if err != nil {
 		return err
 	}
@@ -59,7 +59,7 @@ func loadModel() error {
 	}
 
 	// Load labels
-	labelsFile, err := os.Open("/model/imagenet_comp_graph_label_strings.txt")
+	labelsFile, err := os.Open(labelFilePath)
 	if err != nil {
 		return err
 	}
